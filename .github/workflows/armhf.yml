@@ -1,5 +1,9 @@
 name: Build
 
+on:
+  push:
+    branches: master
+
 env:
   tag: v1.6.0
 
