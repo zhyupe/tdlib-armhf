@@ -14,8 +14,6 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt upgrade
         sudo apt install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
         sudo apt install make git zlib1g-dev libssl-dev gperf php cmake g++
         mkdir artifacts
