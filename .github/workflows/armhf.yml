@@ -20,14 +20,30 @@ jobs:
       
     - name: Fetch tdlib
       run: git clone --branch $tag --depth 1 https://github.com/tdlib/td.git td
-      
+    
+    - name: Fetch and compile Zlib
+      run: |
+        wget https://zlib.net/zlib-1.2.11.tar.gz
+        tar zxf zlib-1.2.11.tar.gz
+        cd zlib-1.2.11
+        ARCH=arm CXXFLAGS="" CHOST=arm-linux-gnueabihf ./configure
+        make -j8
+        
+    - name: Fetch and compile OpenSSL
+      run: |
+        wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz
+        tar zxf openssl-1.1.1g.tar.gz
+        cd openssl-1.1.1g
+        ./Configure linux-elf no-asm shared --prefix=/usr --openssldir=ssl --cross-compile-prefix=arm-linux-gnueabihf-
+        make -j8
+        
     - name: Compile
       run: |
         rm -rf td/build
         mkdir td/build
         cd td/build
         CXXFLAGS="" cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../../artifacts/current/ ..
-        cmake --build . --target install
+        cmake --build . --target install -j8
         
     - name: Cross-Compile for armhf
       run: |
@@ -43,7 +59,7 @@ jobs:
                 -DCMAKE_SHARED_LIBRARY_PREFIX=/usr/arm-linux-gnueabihf/ -DOPENSSL_ROOT_DIR=~/openssl-1.1.1g/ \
                 -DOPENSSL_CRYPTO_LIBRARY=~/openssl-1.1.1g/crypto/libcrypto.so -DZLIB_LIBRARY=~/zlib-1.2.11/libz.so \
                 -DOPENSSL_SSL_LIBRARY=~/openssl-1.1.1g/libssl.so ..
-        cmake --build . --target install
+        cmake --build . --target install -j8
         
     - uses: actions/upload-artifact@v2
       with:
