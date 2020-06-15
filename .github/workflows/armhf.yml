@@ -56,7 +56,7 @@ jobs:
                 -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=arm  \
                 -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
                 -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-                -DCMAKE_SHARED_LIBRARY_PREFIX=/usr/arm-linux-gnueabihf/ 
+                -DCMAKE_SHARED_LIBRARY_PREFIX=/usr/arm-linux-gnueabihf/ \
                 -DOPENSSL_ROOT_DIR=../../openssl-1.1.1g/ -DOPENSSL_INCLUDE_DIR=../../openssl-1.1.1g/ \
                 -DOPENSSL_CRYPTO_LIBRARY=../../openssl-1.1.1g/crypto/libcrypto.so -DZLIB_LIBRARY=../../zlib-1.2.11/libz.so \
                 -DOPENSSL_SSL_LIBRARY=../../openssl-1.1.1g/libssl.so ..
