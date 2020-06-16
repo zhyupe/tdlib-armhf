@@ -34,16 +34,16 @@ jobs:
         wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz
         tar zxf openssl-1.1.1g.tar.gz
         cd openssl-1.1.1g
-        ./Configure linux-elf no-asm shared --prefix=/usr --openssldir=ssl --cross-compile-prefix=arm-linux-gnueabihf-
+        ./Configure linux-elf no-asm shared --openssldir=ssl --cross-compile-prefix=arm-linux-gnueabihf-
         make -j8
         
-    - name: Compile
-      run: |
-        rm -rf td/build
-        mkdir td/build
-        cd td/build
-        CXXFLAGS="" cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../../artifacts/current/ ..
-        cmake --build . --target install -j8
+    #- name: Compile
+    #  run: |
+    #    rm -rf td/build
+    #    mkdir td/build
+    #    cd td/build
+    #    CXXFLAGS="" cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../../artifacts/current/ ..
+    #    cmake --build . --target install -j8
         
     - name: Cross-Compile for armhf
       run: |
