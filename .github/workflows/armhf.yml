@@ -34,16 +34,16 @@ jobs:
         wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz
         tar zxf openssl-1.1.1g.tar.gz
         cd openssl-1.1.1g
-        ./Configure linux-elf no-asm shared --openssldir=ssl --cross-compile-prefix=arm-linux-gnueabihf-
+        ./Configure linux-elf no-asm no-tests --openssldir=ssl --cross-compile-prefix=arm-linux-gnueabihf-
         make -j8
         
-    #- name: Compile
-    #  run: |
-    #    rm -rf td/build
-    #    mkdir td/build
-    #    cd td/build
-    #    CXXFLAGS="" cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../../artifacts/current/ ..
-    #    cmake --build . --target install -j8
+    - name: Compile
+      run: |
+        rm -rf td/build
+        mkdir td/build
+        cd td/build
+        CXXFLAGS="" cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../../artifacts/current/ ..
+        cmake --build . --target install -j8
         
     - name: Cross-Compile for armhf
       run: |
@@ -54,10 +54,9 @@ jobs:
           cmake -DCMAKE_LINKER=/usr/arm-linux-gnueabihf/bin/ld -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX:PATH=../../artifacts/armhf/ -DTD_ENABLE_LTO=ON -DCMAKE_CROSSCOMPILING=True \
                 -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=arm  \
-                -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
-                -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
                 -DCMAKE_SHARED_LIBRARY_PREFIX=/usr/arm-linux-gnueabihf/ \
-                -DOPENSSL_ROOT_DIR=../../openssl-1.1.1g/ -DZLIB_LIBRARY=../../zlib-1.2.11/libz.so ..
+                -DOPENSSL_ROOT_DIR=$PWD/../../openssl-1.1.1g \
+                -DZLIB_LIBRARY=../../zlib-1.2.11/libz.so ..
         cmake --build . --target install -j8
         
     - uses: actions/upload-artifact@v2
